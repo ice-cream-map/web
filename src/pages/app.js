@@ -1,18 +1,12 @@
-import React from "react";
-import Button from "@material-tailwind/react/Button";
+import React, { useState } from "react";
+import Header from "../components/Header";
+import LoginPage from "./login";
 
 function App() {
+  const [isLogged, setIsLogged] = useState(true);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Button
-        className="w-44 mt-10"
-        color="blue"
-        buttonType="filled"
-        ripple="light"
-      >
-        Login
-      </Button>
-    </div>
+    <div className="bg-gray-100">{isLogged ? <LoginPage /> : <Header />}</div>
   );
 }
 
