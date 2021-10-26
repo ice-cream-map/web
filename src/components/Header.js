@@ -1,6 +1,12 @@
 import Image from "@material-tailwind/react/Image";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { logout } from "../slices/loginSlice";
 
 function Header() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   return (
     <header>
       <div className="flex items-center bg-ice_cream w-full p-1 flex-grow py-2">
@@ -14,6 +20,14 @@ function Header() {
           />
         </div>
         <p className="text-ice_cream-text">Hello</p>
+        <button
+          onClick={async () => {
+            await dispatch(logout());
+            history.push("/");
+          }}
+        >
+          Log Out
+        </button>
       </div>
     </header>
   );
