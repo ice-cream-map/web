@@ -3,14 +3,17 @@ import "tailwindcss/tailwind.css";
 import "./styles/globals.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./pages/app";
+import App from "./app/app";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router>
+        <Route path="/" component={App} />
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
