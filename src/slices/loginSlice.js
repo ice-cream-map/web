@@ -1,16 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCurrentUser } from "../api/userAPI";
 import { auth } from "../utils/auth";
 
 export const checkAuth = createAsyncThunk("signin/checkAuth", async () => {
   if (auth.isAuthenticated()) {
     const token = auth.getToken();
-    const user = await getCurrentUser({ token });
 
-    return { token, user };
+    return { token };
   }
 
-  return { token: null, user: null };
+  return { token: null };
 });
 
 export const login = createAsyncThunk("signin/login", auth.login);
@@ -32,13 +30,12 @@ export const loginSlice = createSlice({
   extraReducers: {
     [checkAuth.pending]: startLoading,
     [checkAuth.fulfilled]: (state, { payload }) => {
-      const { token = null, user = null } = payload;
+      const { token = null } = payload;
 
       Object.assign(state, {
         loading: false,
         error: null,
         loggedIn: !!token,
-        loggedInUser: user,
         token,
       });
     },

@@ -2,7 +2,7 @@ import React from "react";
 import LoginForm from "../components/LoginForm";
 import { AuthGuardedRoute } from "../components/AuthGuardedRoute";
 import { Route, Switch, Link } from "react-router-dom";
-import LandingPage from "../pages/LandingPage";
+import LandingPage from "../pages/landingPage";
 
 function App() {
   return (

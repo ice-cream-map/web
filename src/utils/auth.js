@@ -18,15 +18,15 @@ function getToken() {
 }
 
 async function login({ email, password, rememberMe }) {
-  const { token, user } = await signin({ email, password });
+  const { accessToken, user } = await signin({ email, password });
 
   if (rememberMe) {
-    localStorage.setItem("accessToken", token);
+    localStorage.setItem("accessToken", accessToken);
   } else {
-    sessionStorage.setItem("accessToken", token);
+    sessionStorage.setItem("accessToken", accessToken);
   }
 
-  return { token, user };
+  return { accessToken, user };
 }
 
 async function logout() {
