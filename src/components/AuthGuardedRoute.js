@@ -17,7 +17,6 @@ export function AuthGuardedRoute({ children, ...rest }) {
     <Loading />
   ) : (
     <>
-      {error && error.message}
       <Route
         {...rest}
         render={({ location }) => renderRoutedComponent(location)}
