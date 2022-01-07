@@ -9,7 +9,7 @@ export function signin(formData) {
       console.log(res.data);
       resolve(res.data);
     } catch (err) {
-      console.log(err.response)
+      console.log(err.response);
       reject(err);
     }
   });
