@@ -3,7 +3,7 @@ import { signin, signout } from "../api/authAPI";
 export const auth = {
   isAuthenticated,
   getToken,
-  getRole,
+  getRoles,
   login,
   logout,
 };
@@ -18,8 +18,8 @@ function getToken() {
   );
 }
 
-function getRole() {
-  return sessionStorage.getItem("role") || localStorage.getItem("role");
+function getRoles() {
+  return sessionStorage.getItem("roles") || localStorage.getItem("roles");
 }
 
 async function login({ email, password, rememberMe }) {
@@ -27,10 +27,10 @@ async function login({ email, password, rememberMe }) {
 
   if (rememberMe) {
     localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("role", ...roles);
+    localStorage.setItem("roles", roles);
   } else {
     sessionStorage.setItem("accessToken", accessToken);
-    sessionStorage.setItem("role", ...roles);
+    sessionStorage.setItem("roles", roles);
   }
 
   return { accessToken, user, roles };
@@ -41,6 +41,6 @@ async function logout() {
 
   sessionStorage.removeItem("accessToken");
   localStorage.removeItem("accessToken");
-  localStorage.removeItem("role");
-  sessionStorage.removeItem("role");
+  sessionStorage.removeItem("roles");
+  localStorage.removeItem("roles");
 }
