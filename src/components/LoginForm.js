@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { useHistory, useLocation } from "react-router-dom";
 import { login } from "../slices/loginSlice";
+import { selectSignin } from "../slices/loginSlice";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  const { from } = location.state || { from: { pathname: "/" } };
+  const { roles } = useSelector(selectSignin);
   const [formState, setFormState] = useState({
     email: "",
     password: "",
@@ -27,7 +27,9 @@ export default function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     await dispatch(login(formState));
-    history.replace(from);
+    if (roles) {
+      history.replace(`/${roles}`);
+    }
   }
 
   return (

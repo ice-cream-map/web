@@ -6,10 +6,8 @@ export function signin(formData) {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await axios.post(URL + "/auth/login", formData);
-      console.log(res.data);
       resolve(res.data);
     } catch (err) {
-      console.log(err.response);
       reject(err);
     }
   });
