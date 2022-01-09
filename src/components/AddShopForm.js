@@ -29,21 +29,20 @@ function AddShopForm() {
         },
         (err) => {
           const errorObject = err.response.data.errors;
-          console.log(errorObject);
           for (const property in errorObject) {
-            console.log(errorObject[property]);
             setError(property, {
               type: "server",
               message: errorObject[property],
             });
           }
+          reject();
         }
       );
     });
   }
 
   return (
-    <div>
+    <div className="bg-white p-5 rounded-2xl shadow-2xl mt-5">
       <h3 className="text-lg font-medium leading-6 text-gray-900">
         Add ice cream shop
       </h3>

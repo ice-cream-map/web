@@ -1,8 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { logout } from "../slices/loginSlice";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { selectSignin } from "../slices/loginSlice";
 
 const user = {
   name: "Tom Cook",
@@ -10,14 +11,6 @@ const user = {
   imageUrl:
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
-];
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -30,6 +23,7 @@ function classNames(...classes) {
 }
 
 function Header() {
+  const { roles } = useSelector(selectSignin);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -44,7 +38,9 @@ function Header() {
     <header>
       <div className="bg-white p-5 rounded-2xl shadow-2xl flex justify-between items-center">
         <div>
-          <h1 className="font-medium text-black-900">Header</h1>
+          <h3 className="text-lg font-medium leading-6 text-gray-900">
+            Dashboard {roles}
+          </h3>
         </div>
         <Menu as="div" className="ml-3 relative">
           <div>

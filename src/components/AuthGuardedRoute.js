@@ -5,7 +5,7 @@ import { checkAuth, logout, selectSignin } from "../slices/loginSlice";
 import Loading from "./Loading";
 
 export function AuthGuardedRoute({ children, ...rest }) {
-  const { loading, loggedIn, error } = useSelector(selectSignin);
+  const { loading, loggedIn, error, roles } = useSelector(selectSignin);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -26,11 +26,10 @@ export function AuthGuardedRoute({ children, ...rest }) {
 
   function renderRoutedComponent(location) {
     const isLoginPagePathname = location.pathname.includes("login");
+    const { from } = location.state || { from: { pathname: "/" } };
 
     if (loggedIn) {
       if (isLoginPagePathname) {
-        const { from } = location.state || { from: { pathname: "/" } };
-
         return (
           <Redirect
             to={{
@@ -41,7 +40,17 @@ export function AuthGuardedRoute({ children, ...rest }) {
         );
       }
 
-      return <>{children}</>;
+      return (
+        <>
+          <Redirect
+            to={{
+              pathname: `/${roles}`,
+              state: { from },
+            }}
+          />
+          {children}
+        </>
+      );
     } else {
       if (isLoginPagePathname) {
         return children;

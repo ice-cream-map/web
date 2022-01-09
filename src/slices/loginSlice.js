@@ -4,11 +4,12 @@ import { auth } from "../utils/auth";
 export const checkAuth = createAsyncThunk("signin/checkAuth", async () => {
   if (auth.isAuthenticated()) {
     const token = auth.getToken();
+    const roles = auth.getRoles();
 
-    return { token };
+    return { token, roles };
   }
 
-  return { token: null };
+  return { token: null, roles: null };
 });
 
 export const login = createAsyncThunk("signin/login", auth.login);
@@ -21,6 +22,7 @@ const initialState = {
   loggedIn: false,
   loggedInUser: null,
   token: null,
+  roles: null,
 };
 
 export const loginSlice = createSlice({
@@ -30,25 +32,27 @@ export const loginSlice = createSlice({
   extraReducers: {
     [checkAuth.pending]: startLoading,
     [checkAuth.fulfilled]: (state, { payload }) => {
-      const { token = null } = payload;
+      const { token = null, roles = null } = payload;
 
       Object.assign(state, {
         loading: false,
         error: null,
         loggedIn: !!token,
         token,
+        roles,
       });
     },
     [checkAuth.rejected]: receiveError,
     [login.pending]: startLoading,
     [login.fulfilled]: (state, { payload }) => {
-      const { token, user } = payload;
+      const { accessToken, user, roles = null } = payload;
 
       Object.assign(state, {
         loading: false,
         loggedIn: true,
         loggedInUser: user,
-        token,
+        token: accessToken,
+        roles,
       });
     },
     [login.rejected]: receiveError,
