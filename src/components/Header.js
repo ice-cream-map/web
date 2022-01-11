@@ -29,7 +29,7 @@ function Header() {
 
   async function handleLogout() {
     await dispatch(logout());
-    history.push("/");
+    history.push("/login");
     sessionStorage.removeItem("accessToken");
     localStorage.removeItem("accessToken");
   }
@@ -67,7 +67,6 @@ function Header() {
                 <Menu.Item key={item.name}>
                   {({ active }) => (
                     <a
-                      href={item.href}
                       className={classNames(
                         active ? "bg-gray-100" : "",
                         "block px-4 py-2 text-sm text-gray-700"

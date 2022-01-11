@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { myshop, getimageshop } from "../api/shopsAPI";
+import { myshop } from "../api/shopsAPI";
 import { auth } from "../utils/auth";
+import { setShopId } from "../slices/shopSlice";
+import { useDispatch } from "react-redux";
 
 function MyShop() {
   const [shop, setShop] = useState();
-  const [image, setImage] = useState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     return new Promise(async (resolve, reject) => {
       const token = auth.getToken();
       try {
-        const res = await myshop(token);
-        setShop(res);
+        const { id, ...res } = await myshop(token);
+        dispatch(setShopId(id));
+        setShop({ ...res });
+        resolve();
+        console.log({ ...res });
       } catch (err) {
         console.log(err.response);
+        reject(err);
       }
     });
   }, []);
@@ -64,10 +70,25 @@ function MyShop() {
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {shop.iceCreams &&
-                      shop.iceCreams.length > 0 &&
-                      shop.iceCreams.map((item) => {
-                        <p>{item}</p>;
-                      })}
+                      shop.iceCreams.map((d) => <span>{d.name + " "}</span>)}
+                  </dd>
+                </div>
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                    Flavours
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {shop.iceCreams &&
+                      shop.iceCreams.map((d) => (
+                        <span>{d.flavours + " "}</span>
+                      ))}
+                  </dd>
+                </div>
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Tags</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {shop.iceCreams &&
+                      shop.iceCreams.map((d) => <span>{d.tags + " "}</span>)}
                   </dd>
                 </div>
                 <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

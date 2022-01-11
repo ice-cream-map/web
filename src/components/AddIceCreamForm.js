@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { addicecream } from "../api/shopsAPI";
-
-const IceFlavours = [
-  "Ananasowe",
-  "Arbuzowe",
-  "Bananowe",
-  "Brzoskwiniowe",
-  "Cytrynowe",
-  "Czarna porzeczka",
-  "Czekolada gorzka",
-  "Czekolada z chili",
-  "Czekoladowe",
-];
-
-const IceTags = ["Frozen Yogurt", "Sorbet", "Mochi Ice Cream"];
+import { TrashIcon } from "@heroicons/react/solid";
+import { selectMyShop } from "../slices/shopSlice";
 
 function AddIceCreamForm() {
   const [success, setSuccess] = useState(false);
   const history = useHistory();
+  const { shopId } = useSelector(selectMyShop);
+  const [tags, setTags] = useState([]);
+  const [flavours, setFlavours] = useState([]);
+  const [counter, setCounter] = useState(0);
+  const [counterFlavs, setCounterFlavs] = useState(0);
 
   const {
     register,
@@ -28,9 +22,30 @@ function AddIceCreamForm() {
     setError,
   } = useForm();
 
+  const addTag = () => {
+    setTags((prevTags) => [...prevTags, counter]);
+    setCounter((prevCounter) => prevCounter + 1);
+  };
+
+  const removeTag = (index) => () => {
+    setTags((prevTags) => [...prevTags.filter((item) => item !== index)]);
+    setCounter((prevCounter) => prevCounter - 1);
+  };
+
+  const addFlavour = () => {
+    setFlavours((prevFlavs) => [...prevFlavs, counterFlavs]);
+    setCounterFlavs((prevCounter) => prevCounter + 1);
+  };
+
+  const removeFlavour = (index) => () => {
+    setFlavours((prevFlavs) => [...prevFlavs.filter((item) => item !== index)]);
+    setCounterFlavs((prevCounter) => prevCounter - 1);
+  };
+
   function onSubmit(formData) {
+    console.log(formData);
     return new Promise((resolve, reject) => {
-      addicecream(5, formData).then(
+      addicecream(shopId, formData).then(
         () => {
           setSuccess(true);
           resolve();
@@ -62,8 +77,8 @@ function AddIceCreamForm() {
                       <input
                         type="text"
                         id="name"
-                        className="t-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
-                        {...register("Name", { required: true })}
+                        className="t-1 mt-3 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
+                        {...register("name", { required: true })}
                       />
                       <div className="text-red-400">
                         {errors.Name && errors.Name.message}
@@ -77,15 +92,33 @@ function AddIceCreamForm() {
                       >
                         Tags
                       </label>
-                      <select
-                        id="Tags"
-                        className="t-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
-                        {...register("Tags", { required: true })}
+                      {tags.map((index) => {
+                        return (
+                          <label>
+                            <div className="flex items-center">
+                              <input
+                                type="text"
+                                name="tags"
+                                className="t-1 mt-3 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
+                                {...register(`tags.${index}`)}
+                              />
+                              <TrashIcon
+                                className="h-5 w-5 mt-3 ml-2 text-ice_cream-500 group-hover:text-ice_cream-400 cursor-pointer"
+                                aria-hidden="true"
+                                onClick={removeTag(index)}
+                              />
+                            </div>
+                          </label>
+                        );
+                      })}
+                      <button
+                        type="button"
+                        onClick={addTag}
+                        className="inline-flex justify-center mt-3 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-ice_cream hover:bg-ice_cream focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ice_cream"
                       >
-                        {IceTags.map((option) => (
-                          <option value={option}>{option}</option>
-                        ))}
-                      </select>
+                        Add New Tag
+                      </button>
+
                       <div className="text-red-400">
                         {errors.Tags && errors.Tags.message}
                       </div>
@@ -98,15 +131,33 @@ function AddIceCreamForm() {
                       >
                         Flavours
                       </label>
-                      <select
-                        id="Flavours"
-                        className="t-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
-                        {...register("Flavours", { required: true })}
+                      {flavours.map((index) => {
+                        return (
+                          <label>
+                            <div className="flex items-center">
+                              <input
+                                type="text"
+                                name="flavours"
+                                className="t-1 mt-3 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
+                                {...register(`flavours.${index}`)}
+                              />
+                              <TrashIcon
+                                className="h-5 w-5 mt-3 ml-2 text-ice_cream-500 group-hover:text-ice_cream-400 cursor-pointer"
+                                aria-hidden="true"
+                                onClick={removeFlavour(index)}
+                              />
+                            </div>
+                          </label>
+                        );
+                      })}
+                      <button
+                        type="button"
+                        onClick={addFlavour}
+                        className="inline-flex justify-center mt-3 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-ice_cream hover:bg-ice_cream focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ice_cream"
                       >
-                        {IceFlavours.map((option) => (
-                          <option value={option}>{option}</option>
-                        ))}
-                      </select>
+                        Add New Flavour
+                      </button>
+
                       <div className="text-red-400">
                         {errors.Flavours && errors.Flavours.message}
                       </div>

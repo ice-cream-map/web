@@ -27,9 +27,6 @@ export default function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     await dispatch(login(formState));
-    if (roles) {
-      history.replace(`/${roles}`);
-    }
   }
 
   return (

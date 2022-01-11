@@ -4,7 +4,7 @@ import { Redirect, Route, useHistory } from "react-router-dom";
 import { checkAuth, logout, selectSignin } from "../slices/loginSlice";
 import Loading from "./Loading";
 
-export function AuthGuardedRoute({ children, ...rest }) {
+export function AuthGuardedRoute({ children, role, ...rest }) {
   const { loading, loggedIn, error, roles } = useSelector(selectSignin);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -38,19 +38,30 @@ export function AuthGuardedRoute({ children, ...rest }) {
             }}
           />
         );
+      } else {
+        if (location.pathname.includes("/")) {
+          return (
+            <>
+              <Redirect
+                to={{
+                  pathname: `/${roles}`,
+                  state: { from },
+                }}
+              />
+              {children}
+            </>
+          );
+        } else {
+          return (
+            <Redirect
+              to={{
+                pathname: from.pathname,
+                state: { from },
+              }}
+            />
+          );
+        }
       }
-
-      return (
-        <>
-          <Redirect
-            to={{
-              pathname: `/${roles}`,
-              state: { from },
-            }}
-          />
-          {children}
-        </>
-      );
     } else {
       if (isLoginPagePathname) {
         return children;

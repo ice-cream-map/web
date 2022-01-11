@@ -9,13 +9,13 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <AuthGuardedRoute exact path={["/", "/Admin"]}>
+        <AuthGuardedRoute exact path="/Admin" role="Admin">
           <AdminPanel />
         </AuthGuardedRoute>
-        <AuthGuardedRoute exact path={["/", "/ShopOwner/Add", "/ShopOwner"]}>
+        <AuthGuardedRoute exact path="/ShopOwner" role="ShopOwner">
           <OwnerPanel />
         </AuthGuardedRoute>
-        <AuthGuardedRoute path="/login">
+        <AuthGuardedRoute path={["/", "/login"]}>
           <LoginForm />
         </AuthGuardedRoute>
       </Switch>
