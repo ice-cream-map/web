@@ -2,9 +2,9 @@ import axios from "axios";
 import { auth } from "../utils/auth";
 
 const URL = "http://localhost:8080/api/v1";
-const token = auth.getToken();
 
 export function addshop(formData) {
+  const token = auth.getToken();
   return new Promise(async (resolve, reject) => {
     try {
       const res = await axios.post(URL + "/shops", formData, {
@@ -30,19 +30,6 @@ export function myshop(token) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
-      resolve(res.data);
-    } catch (err) {
-      console.log(err.response);
-      reject(err);
-    }
-  });
-}
-
-export function getimageshop(photoId) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const res = await axios.get(URL + `/photos/${photoId}`);
       resolve(res.data);
     } catch (err) {
       reject(err);
@@ -51,6 +38,7 @@ export function getimageshop(photoId) {
 }
 
 export function addicecream(shopId, formData) {
+  const token = auth.getToken();
   return new Promise(async (resolve, reject) => {
     try {
       const res = await axios.post(
@@ -62,10 +50,8 @@ export function addicecream(shopId, formData) {
           },
         }
       );
-      console.log(res.data);
       resolve(res.data);
     } catch (err) {
-      console.log(err.response);
       reject(err);
     }
   });

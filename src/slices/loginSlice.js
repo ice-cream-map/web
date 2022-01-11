@@ -45,7 +45,7 @@ export const loginSlice = createSlice({
     [checkAuth.rejected]: receiveError,
     [login.pending]: startLoading,
     [login.fulfilled]: (state, { payload }) => {
-      const { accessToken, user, roles = null } = payload;
+      const { accessToken, user, roles } = payload;
 
       Object.assign(state, {
         loading: false,
