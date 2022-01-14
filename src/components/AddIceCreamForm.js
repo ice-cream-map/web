@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 import { addicecream } from "../api/shopsAPI";
 import { TrashIcon } from "@heroicons/react/solid";
 import { selectMyShop } from "../slices/shopSlice";
 
 function AddIceCreamForm() {
   const [success, setSuccess] = useState(false);
-  const history = useHistory();
   const { shopId } = useSelector(selectMyShop);
   const [tags, setTags] = useState([]);
   const [flavours, setFlavours] = useState([]);
@@ -19,7 +17,6 @@ function AddIceCreamForm() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
 
   const addTag = () => {
@@ -81,7 +78,7 @@ function AddIceCreamForm() {
                         {...register("name", { required: true })}
                       />
                       <div className="text-red-400">
-                        {errors.Name && errors.Name.message}
+                        {errors.name && errors.name.message}
                       </div>
                     </div>
 
@@ -100,7 +97,9 @@ function AddIceCreamForm() {
                                 type="text"
                                 name="tags"
                                 className="t-1 mt-3 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
-                                {...register(`tags.${index}`)}
+                                {...register(`tags.${index}`, {
+                                  required: true,
+                                })}
                               />
                               <TrashIcon
                                 className="h-5 w-5 mt-3 ml-2 text-ice_cream-500 group-hover:text-ice_cream-400 cursor-pointer"
@@ -120,7 +119,7 @@ function AddIceCreamForm() {
                       </button>
 
                       <div className="text-red-400">
-                        {errors.Tags && errors.Tags.message}
+                        {errors.tags && errors.tags.message}
                       </div>
                     </div>
 
@@ -139,7 +138,9 @@ function AddIceCreamForm() {
                                 type="text"
                                 name="flavours"
                                 className="t-1 mt-3 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-ice_cream focus:border-ice_cream sm:text-sm"
-                                {...register(`flavours.${index}`)}
+                                {...register(`flavours.${index}`, {
+                                  required: true,
+                                })}
                               />
                               <TrashIcon
                                 className="h-5 w-5 mt-3 ml-2 text-ice_cream-500 group-hover:text-ice_cream-400 cursor-pointer"
@@ -159,7 +160,7 @@ function AddIceCreamForm() {
                       </button>
 
                       <div className="text-red-400">
-                        {errors.Flavours && errors.Flavours.message}
+                        {errors.flavours && errors.flavours.message}
                       </div>
                     </div>
                   </div>

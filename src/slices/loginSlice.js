@@ -74,6 +74,7 @@ function startLoading(state) {
 }
 
 function receiveError(state, action) {
+  console.log(action);
   Object.assign(state, {
     loading: false,
     error: action.error,
