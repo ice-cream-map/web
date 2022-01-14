@@ -1,7 +1,7 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
 import { AuthGuardedRoute } from "../components/AuthGuardedRoute";
-import { Route, Switch, Link } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import AdminPanel from "../pages/adminPage";
 import OwnerPanel from "../pages/ownerPage";
 

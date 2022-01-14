@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, useHistory } from "react-router-dom";
-import { checkAuth, logout, selectSignin } from "../slices/loginSlice";
+import { Redirect, Route } from "react-router-dom";
+import { checkAuth, selectSignin } from "../slices/loginSlice";
 import Loading from "./Loading";
 
 export function AuthGuardedRoute({ children, role, ...rest }) {
-  const { loading, loggedIn, error, roles } = useSelector(selectSignin);
+  const { loading, loggedIn, roles } = useSelector(selectSignin);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     dispatch(checkAuth());

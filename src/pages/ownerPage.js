@@ -14,15 +14,10 @@ const navigation = [
   { name: "Add ice cream", href: "/ShopOwner/Add" },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 function OwnerPanel() {
   return (
     <div>
       <main className="max-w-screen-2xl mx-auto flex lg:flex-row flex-col">
-        {/* Menu */}
         <Router>
           <div className="bg-white p-5 rounded-2xl shadow-2xl lg:w-1/5 m-5 flex justify-start flex-col items-center">
             <img className="h-32 w-32 rounded-full" src={logo} alt="" />
@@ -30,12 +25,10 @@ function OwnerPanel() {
               <div className="flex flex-col">
                 {navigation.map((item) => (
                   <NavLink
+                    exact
                     to={item.href}
-                    className={({ isActive }) =>
-                      isActive
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium mt-3"
-                    }
+                    activeClassName="bg-gray-900 text-white"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium mt-3"
                   >
                     {item.name}
                   </NavLink>
@@ -43,10 +36,10 @@ function OwnerPanel() {
               </div>
             </div>
           </div>
-          {/* Header */}
+
           <div className="flex-1 flex-col m-5">
             <Header />
-            {/* Dashboard */}
+
             <Switch>
               <Route path="/ShopOwner/Add" component={AddIceCreamForm} />
               <Route path="/ShopOwner" component={MyShop} />
