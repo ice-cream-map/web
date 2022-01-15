@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { addicecream } from "../api/shopsAPI";
 import { TrashIcon } from "@heroicons/react/solid";
 import { selectMyShop } from "../slices/shopSlice";
+import { Dialog, Transition } from "@headlessui/react";
+import { useHistory } from "react-router-dom";
 
 function AddIceCreamForm() {
-  const [success, setSuccess] = useState(false);
   const { shopId } = useSelector(selectMyShop);
   const [tags, setTags] = useState([]);
   const [flavours, setFlavours] = useState([]);
   const [counter, setCounter] = useState(0);
   const [counterFlavs, setCounterFlavs] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
 
   const {
     register,
@@ -39,12 +42,16 @@ function AddIceCreamForm() {
     setCounterFlavs((prevCounter) => prevCounter - 1);
   };
 
+  function closeModal() {
+    history.push("/ShopOwner");
+    setIsOpen(false);
+  }
+
   function onSubmit(formData) {
-    console.log(formData);
     return new Promise((resolve, reject) => {
       addicecream(shopId, formData).then(
         () => {
-          setSuccess(true);
+          setIsOpen(true);
           resolve();
         },
         (err) => reject(err)
@@ -89,9 +96,9 @@ function AddIceCreamForm() {
                       >
                         Tags
                       </label>
-                      {tags.map((index) => {
+                      {tags.map((index, i) => {
                         return (
-                          <label>
+                          <label key={i}>
                             <div className="flex items-center">
                               <input
                                 type="text"
@@ -130,9 +137,9 @@ function AddIceCreamForm() {
                       >
                         Flavours
                       </label>
-                      {flavours.map((index) => {
+                      {flavours.map((index, i) => {
                         return (
-                          <label>
+                          <label key={i}>
                             <div className="flex items-center">
                               <input
                                 type="text"
@@ -172,13 +179,74 @@ function AddIceCreamForm() {
                   >
                     Save
                   </button>
-                  {success && <div className="mt-5">Dodano pomyślnie</div>}
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-20 overflow-y-auto"
+          onClose={closeModal}
+        >
+          <div className="min-h-screen px-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+            </Transition.Child>
+
+            <span
+              className="inline-block h-screen align-middle"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-center align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <Dialog.Title
+                  as="h3"
+                  className="text-lg font-medium leading-6 text-gray-900"
+                >
+                  Dodano pomyślnie
+                </Dialog.Title>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">
+                    Twój lód został dodany!
+                  </p>
+                </div>
+
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-ice_cream border border-transparent rounded-md hover:bg-ice_cream-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ice_cream"
+                    onClick={closeModal}
+                  >
+                    Go Back to shop
+                  </button>
+                </div>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 }

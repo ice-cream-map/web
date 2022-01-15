@@ -23,8 +23,9 @@ function OwnerPanel() {
             <img className="h-32 w-32 rounded-full" src={logo} alt="" />
             <div className="hidden sm:block">
               <div className="flex flex-col">
-                {navigation.map((item) => (
+                {navigation.map((item, i) => (
                   <NavLink
+                    key={i}
                     exact
                     to={item.href}
                     activeClassName="bg-gray-900 text-white"
@@ -39,7 +40,6 @@ function OwnerPanel() {
 
           <div className="flex-1 flex-col m-5">
             <Header />
-
             <Switch>
               <Route path="/ShopOwner/Add" component={AddIceCreamForm} />
               <Route path="/ShopOwner" component={MyShop} />

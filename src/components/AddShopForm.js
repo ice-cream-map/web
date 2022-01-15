@@ -9,7 +9,9 @@ function AddShopForm() {
     handleSubmit,
     formState: { errors },
     setError,
+    watch,
   } = useForm();
+  const watchLogoInput = watch("LogoImage");
 
   function onSubmit(data) {
     const formData = new FormData();
@@ -202,7 +204,11 @@ function AddShopForm() {
                             htmlFor="LogoImage"
                             className="relative cursor-pointer bg-white rounded-md font-medium text-ice_cream hover:text-ice_cream focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-ice_cream"
                           >
-                            <span>Upload a file</span>
+                            <span>
+                              {watchLogoInput && watchLogoInput.length > 0
+                                ? watchLogoInput[0].name
+                                : "Upload a file"}
+                            </span>
                             <input
                               id="LogoImage"
                               name="file-upload"
