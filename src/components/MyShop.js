@@ -78,28 +78,28 @@ function MyShop() {
             <div className="col-span-6">
               <div className="p-5">
                 {shop.iceCreams &&
-                  shop.iceCreams.map((d, i) => (
-                    <div className="shadow rounded-xl p-5">
+                  shop.iceCreams.map((iceCream, i) => (
+                    <div key={i} className="shadow rounded-xl p-5">
                       <h4 className="font-medium text-lg leading-6 text-gray-900">
-                        {d.name}
+                        {iceCream.name}
                       </h4>
                       <div className="flex items-center my-3 text-sm flex-wrap">
                         Tags:
                         <span
-                          key={i}
-                          class="px-4 py-2 mx-1 rounded-full text-green-500 bg-green-200 font-semibold text-xs flex align-center w-max active:bg-gray-300 transition duration-300 ease"
+                          key={iceCream.id}
+                          className="px-4 py-2 mx-1 rounded-full text-green-500 bg-green-200 font-semibold text-xs flex align-center w-max active:bg-gray-300 transition duration-300 ease"
                         >
-                          {d.tags}
+                          {iceCream.tags}
                         </span>
                       </div>
                       <div className="flex items-center text-sm flex-wrap">
                         Flavours:
-                        {d.flavours.map((e) => (
+                        {iceCream.flavours.map((flavour, i) => (
                           <span
-                            key={i}
-                            class="px-4 py-2 m-1 rounded-full text-blue-500 bg-blue-200 font-semibold text-xs flex align-center w-max active:bg-gray-300 transition duration-300 ease"
+                            key={flavour}
+                            className="px-4 py-2 m-1 rounded-full text-blue-500 bg-blue-200 font-semibold text-xs flex align-center w-max active:bg-gray-300 transition duration-300 ease"
                           >
-                            {e}
+                            {flavour}
                           </span>
                         ))}
                       </div>

@@ -13,10 +13,8 @@ export function addshop(formData) {
           "Content-type": "mulitpart/form-data",
         },
       });
-      console.log(res.data);
       resolve(res.data);
     } catch (err) {
-      console.log(err.response);
       reject(err);
     }
   });

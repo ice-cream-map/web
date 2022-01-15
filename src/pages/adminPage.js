@@ -30,7 +30,6 @@ function AdminPanel() {
 
         <div className="flex-1 flex-col m-5">
           <Header />
-
           <AddShopForm />
         </div>
       </main>
